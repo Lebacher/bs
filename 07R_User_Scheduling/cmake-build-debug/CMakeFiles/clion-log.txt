@@ -1,0 +1,33 @@
+"D:\CLion 2021.1\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=D:/mingw64/bin/mingw32-make.exe -DCMAKE_C_COMPILER=D:/mingw64/bin/gcc.exe -DCMAKE_CXX_COMPILER=D:/mingw64/bin/g++.exe -G "CodeBlocks - MinGW Makefiles" G:\Desktop\07R_User_Scheduling
+-- The C compiler identification is GNU 8.1.0
+-- Detecting C compiler ABI info
+CMake Error: Generator: execution of make failed. Make command was: D:/mingw64/bin/mingw32-make.exe cmTC_7f86b/fast && 
+-- Detecting C compiler ABI info - failed
+-- Check for working C compiler: D:/mingw64/bin/gcc.exe
+CMake Error: Generator: execution of make failed. Make command was: D:/mingw64/bin/mingw32-make.exe cmTC_aaecf/fast && 
+-- Check for working C compiler: D:/mingw64/bin/gcc.exe - broken
+CMake Error at D:/CLion 2021.1/bin/cmake/win/share/cmake-3.19/Modules/CMakeTestCCompiler.cmake:66 (message):
+  The C compiler
+
+    "D:/mingw64/bin/gcc.exe"
+
+  is not able to compile a simple test program.
+
+  It fails with the following output:
+
+    Change Dir: G:/Desktop/07R_User_Scheduling/cmake-build-debug/CMakeFiles/CMakeTmp
+    
+    Run Build Command(s):D:/mingw64/bin/mingw32-make.exe cmTC_aaecf/fast && 绯荤粺鎵句笉鍒版寚瀹氱殑鏂囦欢銆�
+    Generator: execution of make failed. Make command was: D:/mingw64/bin/mingw32-make.exe cmTC_aaecf/fast && 
+    
+
+  
+
+  CMake will not be able to correctly generate this project.
+Call Stack (most recent call first):
+  CMakeLists.txt:3 (project)
+
+
+-- Configuring incomplete, errors occurred!
+See also "G:/Desktop/07R_User_Scheduling/cmake-build-debug/CMakeFiles/CMakeOutput.log".
+See also "G:/Desktop/07R_User_Scheduling/cmake-build-debug/CMakeFiles/CMakeError.log".
