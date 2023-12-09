@@ -33,6 +33,7 @@ int threads_create(void* (*start_routine)(void*), void* arg) {
     block_sigprof();
 
     // Init if necessary
+	// 如果需要则初始化
 
     static bool initialized;
 
@@ -53,6 +54,7 @@ int threads_create(void* (*start_routine)(void*), void* arg) {
     }
 
     // Create a thread control block for the newly created thread.
+	// 为新创建的线程创建线程控制块。
 
     TCB* newTCB;
 
@@ -76,6 +78,7 @@ int threads_create(void* (*start_routine)(void*), void* arg) {
     newTCB->argument      = arg;
 
     // Enqueue the newly created stack on the top feedback *level*
+	// 将新创建的堆栈放入顶部反馈 *level* 的队列中
 
     if (queue_enqueue(feedback, newTCB) != 0) {
         tcb_destroy(newTCB);
@@ -100,8 +103,9 @@ void threads_exit(void* result) {
 
     // TODO: Pick the next process from feedback without enqueing the last
     // running one to mark it completed
-	
-	QUEUE* cursor = get_feedback_queue();
+	// TODO：从反馈中选择下一个进程，而不排队最后一个运行的进程以将其标记为已完成
+    //---------------------------------------------------------------------------------------------
+    QUEUE* cursor = get_feedback_queue();
     for (int i = 0; i < FEEDBACK_DEPTH; ++i) {
         if (cursor->head != NULL)
         {
@@ -119,16 +123,13 @@ void threads_exit(void* result) {
             abort();
         }
     }
-	
-	
-	
-	
+    //---------------------------------------------------------------------------------------------
 
     if (running == NULL) {
         exit(EXIT_SUCCESS);
     }
 
-    setcontext(&running->context); // also unblocks SIGPROF
+    setcontext(&running->context); // also unblocks SIGPROF 还可以解锁 SIGPROF
 }
 
 int threads_join(int id, void** result) {
@@ -155,11 +156,12 @@ void threads_yield(int dont_reschedule) {
         // TODO: Change scheduler state such that in the next call of
         // handle_sigprof this TCB won't be re-enqueued (used for implemented
         // Semaphores)
-		
-		
-		
-		
-		if (queue_enqueue(feedback, running) != 0) {
+		// TODO：更改调度程序状态，以便在下一次调用 handle_sigprof 时，
+		// 该 TCB 不会重新排队（用于实现的信号量）
+        //---------------------------------------------------------------------------------------------
+        TCB* temp = get_running_thread();
+
+        if (queue_enqueue(feedback, running) != 0) {
             abort();
         }
 
@@ -167,18 +169,13 @@ void threads_yield(int dont_reschedule) {
             abort();
         }
 
-        for (int i = 0; i < feedback->size - 1; i++)
-        {
+        while (feedback->head->thread != temp) {
             if (queue_enqueue(feedback, queue_dequeue(feedback)) != 0) {
                 abort();
             }
         }
-		
-		
-		
-		
-		
-		
+
+        //---------------------------------------------------------------------------------------------
     }
     raise(SIGPROF);
 }
@@ -225,7 +222,7 @@ static bool init_first_context(void) {
 }
 
 static bool init_profiling_timer(void) {
-    // Install signal handler
+    // Install signal handler 安装信号处理程序
 
     sigset_t all;
     sigfillset(&all);
@@ -243,11 +240,14 @@ static bool init_profiling_timer(void) {
 
     const struct itimerval timer = {
         // Defines interrupt time (== timeslice length)
+		// 定义中断时间（==时间片长度）
         {SLICE_LENGTH_SECONDS, SLICE_LENGTH_MICROSECONDS},
         // Arm the timer as soon as possible
+		// 尽快启动定时器
         {0, 1}};
 
     // Enable timer
+	// 启用定时器
 
     if (setitimer(ITIMER_PROF, &timer, NULL) == -1) {
         if (sigaction(SIGPROF, &old, NULL) == -1) {
@@ -265,14 +265,14 @@ static void handle_sigprof(int signum, siginfo_t* nfo, void* context) {
     int old_errno = errno;
 
     // TODO: Check for any waiting proccess in all queues
-	
-	
-	
-	QUEUE* cursor = get_feedback_queue();
+	// TODO: 检查所有队列中是否有等待进程
+	//---------------------------------------------------------------------------------------------
+
+    QUEUE* cursor = get_feedback_queue();
     size_t counter = 0;
 
     for (int i = 0; i < FEEDBACK_DEPTH; ++i) {
-        counter += cursor->size;
+        counter += cursor->queue_size;
         cursor = cursor->next;
     }
 
@@ -280,13 +280,10 @@ static void handle_sigprof(int signum, siginfo_t* nfo, void* context) {
     {
         _exit(0);
     }
-	
-	
-	
-	
-	
+    //---------------------------------------------------------------------------------------------
 
     // Backup the current context
+	// 备份当前上下文
 
     ucontext_t* stored  = &running->context;
     ucontext_t* updated = (ucontext_t*)context;
@@ -297,17 +294,19 @@ static void handle_sigprof(int signum, siginfo_t* nfo, void* context) {
     stored->uc_sigmask  = updated->uc_sigmask;
 
     // TODO: Bump last running process into next lowest queue
+	// TODO: 将最后一个正在运行的进程放入下一个最低队列
     // TODO: If last process yielded because of Semaphore-wait: do not requeue!
+	// TODO：如果最后一个进程由于信号等待而放弃：不要重新排队！
     // But otherwise do!
-	
-	
-	
-	
-	cursor = get_feedback_queue();
+	// 但否则就这样做！
+    //---------------------------------------------------------------------------------------------
+    cursor = get_feedback_queue();
     counter = 0;
 
     for (int i = 0; i < FEEDBACK_DEPTH; ++i) {
-        if (cursor->head != NULL) {
+        if (&(cursor->head) == NULL) {
+        }
+        else{
             counter = i;
         }
         cursor = cursor->next;
@@ -329,38 +328,16 @@ static void handle_sigprof(int signum, siginfo_t* nfo, void* context) {
     if (queue_enqueue(cursor, running) != 0) {
         abort();
     }
-	
-	
-	
-	
-
+    //---------------------------------------------------------------------------------------------
     running = NULL;
 
     // TODO: Pick next process from *best* feedback queue
-	
-	
-	
-	
-	cursor = get_feedback_queue();
-
-    for (int i = 0; i < FEEDBACK_DEPTH; ++i) {
-        if (cursor->head == NULL) {
-            cursor = cursor->next;
-        }
-        else{
-            break;
-        }
-    }
-
-    if ((running = queue_dequeue(cursor)) == NULL) {
+	// TODO：从*最佳*反馈队列中选择下一个进程
+    //---------------------------------------------------------------------------------------------
+    if ((running = queue_dequeue(feedback)) == NULL) {
         abort();
     }
-
-	
-	
-	
-	
-	
+    //---------------------------------------------------------------------------------------------
 
     if (running == NULL) {
         fprintf(stderr, "Threads: All threads are waiting or dead, Abort");
@@ -370,15 +347,18 @@ static void handle_sigprof(int signum, siginfo_t* nfo, void* context) {
     running->used_slices++;
 
     // TODO: Cycle-based Anti-Aging
-	
-	
-	
-	cycles++;
+	// TODO：基于周期的抗衰老
+    //---------------------------------------------------------------------------------------------
+    cycles++;
     cursor = get_feedback_queue()->next;
     if (cycles == ANTI_AGING_CYCLES){
         for (int i = 0; i < FEEDBACK_DEPTH - 1; ++i) {
-            while (cursor->head != NULL){
-                if (queue_enqueue(feedback, queue_dequeue(cursor)) != 0) {
+            while (*(cursor->head) != NULL){
+                if (queue_enqueue(feedback, cursor->head->thread) != 0) {
+                    abort();
+                }
+
+                if (queue_dequeue(cursor) == NULL) {
                     abort();
                 }
             }
@@ -386,11 +366,9 @@ static void handle_sigprof(int signum, siginfo_t* nfo, void* context) {
         }
         cycles = 0;
     }
-	
-	
-	
-
+    //---------------------------------------------------------------------------------------------
     // Manually leave the signal handler
+	// 手动离开信号处理程序
     errno = old_errno;
     if (setcontext(&running->context) == -1) {
         abort();
@@ -409,6 +387,7 @@ static void handle_thread_start(void) {
 
 static bool malloc_stack(TCB* thread) {
     // Get the stack size
+	// 获取堆栈大小
 
     struct rlimit limit;
 
@@ -417,6 +396,7 @@ static bool malloc_stack(TCB* thread) {
     }
 
     // Allocate memory
+	// 分配内存
 
     void* stack;
 
@@ -425,6 +405,7 @@ static bool malloc_stack(TCB* thread) {
     }
 
     // Update the thread control bock
+	// 更新线程控制块
 
     thread->context.uc_stack.ss_flags = 0;
     thread->context.uc_stack.ss_size  = limit.rlim_cur;

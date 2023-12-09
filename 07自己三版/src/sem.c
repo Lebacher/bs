@@ -6,14 +6,13 @@
 
 Semaphore_t* semaphore_create(int initial_value) {
     // WRITE YOUR CODE HERE
-	
-	
-	if (initial_value < 0) {
+	    if (initial_value < 0) {
         abort();
     }
 
     Semaphore_t* sem = (Semaphore_t*)malloc(sizeof(Semaphore_t));
 
+    //Initialize value and queue of semaphore.
     if (sem == NULL) {
         perror("Error creating semaphore");
         exit(EXIT_FAILURE);
@@ -23,72 +22,61 @@ Semaphore_t* semaphore_create(int initial_value) {
     sem->queue = queue_new();
 
     return sem;
-	
-	
-	
-    return NULL;
 }
 
 void semaphore_destroy(Semaphore_t* sem) {
     // WRITE YOUR CODE HERE
-	
-	
-	
 	if (sem == NULL) {
         return;
     }
 
+    //Destroy the queue of semaphore.
     queue_destroy(sem->queue);
+
+    //free the memory of semaphore.
     free(sem);
-	
-	
-	
-	
 }
 
 void sem_wait(Semaphore_t* sem) {
     // WRITE YOUR CODE HERE
-	
-	
-	
 	block_sigprof();
-
-	/*while (sem->value <= 0) {
-        queue_enqueue(sem->queue, get_running_thread());
-        unblock_sigprof();
+    if (sem->value <= 0)
+    {
+        if (queue_enqueue(sem->queue, get_running_thread()) != 0) {
+            abort();
+        }
         threads_yield(1);
-        block_sigprof();
     }
-
     sem->value--;
-    unblock_sigprof();*/
-	
-	
-	
-	
+    unblock_sigprof();
 }
 
 void sem_post(Semaphore_t* sem) {
     // WRITE YOUR CODE HERE
-	
-	
-	block_sigprof();
-
-    if (sem->value < 0) {
-        if (sem->queue != NULL) {
-            TCB* thread_in = queue_dequeue(sem->queue);
+	int counter = 0;
+    block_sigprof();
+    if (sem->value < 0)
+    {
+        if (sem->queue != NULL) 
+        {
+            TCB* temp_thread;
+            
+            if ((temp_thread = queue_dequeue(sem->queue)) == NULL) {
+                abort();
+            }
+            
             QUEUE* cursor = get_feedback_queue();
 
-            for (int i = 0; i < thread_in->feedback_depth; i++) {
+            for (int i = 0; i < temp_thread->feedback_depth; i++) {
                 cursor = cursor->next;
             }
 
-            queue_enqueue(cursor, thread_in);
+            //Put it into the queue.
+            if (queue_enqueue(cursor, temp_thread) != 0) {
+                abort();
+            }
         }
         sem->value++;
     }
     unblock_sigprof();
-	
-	
-	
 }
