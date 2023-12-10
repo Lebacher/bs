@@ -252,7 +252,21 @@ static void handle_sigprof(int signum, siginfo_t* nfo, void* context) {
     // But otherwise do!
 	if (schedule_state == false)
     {
-        if (queue_enqueue(get_feedback_queue(), running) != 0) {
+        cursor = get_feedback_queue();
+        int new_feedback_depth = running->feedback_depth;
+
+        if (running->feedback_depth == FEEDBACK_DEPTH - 1) {
+            new_feedback_depth++; 
+        }
+
+        
+        for (int i = 0; i < new_feedback_depth; i++) {
+            cursor = cursor->next;
+        }
+        
+        running->feedback_depth = new_feedback_depth; 
+
+        if (queue_enqueue(cursor, running) != 0) {
             abort();
         }
     }
@@ -290,7 +304,7 @@ static void handle_sigprof(int signum, siginfo_t* nfo, void* context) {
     if (cycles == ANTI_AGING_CYCLES){
         cursor = get_feedback_queue()->next;
         TCB* temp_thread;
-        //Starting from the second queue in feedback, put each thread in it into the first queue.
+        //Starting from the second queue in feedback, put each thread into the first queue.
         for (int i = 0; i < FEEDBACK_DEPTH - 1; ++i) {
             while (cursor->head != NULL){
 

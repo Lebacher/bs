@@ -1,0 +1,2 @@
+/usr/bin/ar qc libputhreads.a CMakeFiles/puthreads.dir/queue.c.o CMakeFiles/puthreads.dir/tcb.c.o CMakeFiles/puthreads.dir/threads.c.o
+/usr/bin/ranlib libputhreads.a

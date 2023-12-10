@@ -1,0 +1,6 @@
+/ibr/y-home/y0101318/Downloads/bs/07自己三版/CMakeFiles/scheduler.dir
+/ibr/y-home/y0101318/Downloads/bs/07自己三版/CMakeFiles/edit_cache.dir
+/ibr/y-home/y0101318/Downloads/bs/07自己三版/CMakeFiles/rebuild_cache.dir
+/ibr/y-home/y0101318/Downloads/bs/07自己三版/lib/puthreads/CMakeFiles/puthreads.dir
+/ibr/y-home/y0101318/Downloads/bs/07自己三版/lib/puthreads/CMakeFiles/edit_cache.dir
+/ibr/y-home/y0101318/Downloads/bs/07自己三版/lib/puthreads/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,1 @@
+/usr/bin/cc -std=c11 -Wall -g -Wconversion -Wsign-conversion -O0 -D_XOPEN_SOURCE=700 -D_DEFAULT_SOURCE -rdynamic CMakeFiles/scheduler.dir/src/demo.c.o CMakeFiles/scheduler.dir/src/main.c.o CMakeFiles/scheduler.dir/src/sem.c.o -o scheduler  lib/puthreads/libputhreads.a 

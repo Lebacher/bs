@@ -1,0 +1,32 @@
+[
+{
+  "directory": "/ibr/y-home/y0101318/Downloads/bs/07自己三版",
+  "command": "/usr/bin/cc  -I/ibr/y-home/y0101318/Downloads/bs/07自己三版/lib/puthreads -I/ibr/y-home/y0101318/Downloads/bs/07自己三版/include -std=c11 -Wall -g -Wconversion -Wsign-conversion -O0 -D_XOPEN_SOURCE=700 -D_DEFAULT_SOURCE -o CMakeFiles/scheduler.dir/src/demo.c.o -c /ibr/y-home/y0101318/Downloads/bs/07自己三版/src/demo.c",
+  "file": "/ibr/y-home/y0101318/Downloads/bs/07自己三版/src/demo.c"
+},
+{
+  "directory": "/ibr/y-home/y0101318/Downloads/bs/07自己三版",
+  "command": "/usr/bin/cc  -I/ibr/y-home/y0101318/Downloads/bs/07自己三版/lib/puthreads -I/ibr/y-home/y0101318/Downloads/bs/07自己三版/include -std=c11 -Wall -g -Wconversion -Wsign-conversion -O0 -D_XOPEN_SOURCE=700 -D_DEFAULT_SOURCE -o CMakeFiles/scheduler.dir/src/main.c.o -c /ibr/y-home/y0101318/Downloads/bs/07自己三版/src/main.c",
+  "file": "/ibr/y-home/y0101318/Downloads/bs/07自己三版/src/main.c"
+},
+{
+  "directory": "/ibr/y-home/y0101318/Downloads/bs/07自己三版",
+  "command": "/usr/bin/cc  -I/ibr/y-home/y0101318/Downloads/bs/07自己三版/lib/puthreads -I/ibr/y-home/y0101318/Downloads/bs/07自己三版/include -std=c11 -Wall -g -Wconversion -Wsign-conversion -O0 -D_XOPEN_SOURCE=700 -D_DEFAULT_SOURCE -o CMakeFiles/scheduler.dir/src/sem.c.o -c /ibr/y-home/y0101318/Downloads/bs/07自己三版/src/sem.c",
+  "file": "/ibr/y-home/y0101318/Downloads/bs/07自己三版/src/sem.c"
+},
+{
+  "directory": "/ibr/y-home/y0101318/Downloads/bs/07自己三版/lib/puthreads",
+  "command": "/usr/bin/cc   -std=c11 -Wall -g -Wconversion -Wsign-conversion -O0 -D_XOPEN_SOURCE=700 -D_DEFAULT_SOURCE -std=c11 -Wall -g -Wconversion -Wsign-conversion -O0 -D_XOPEN_SOURCE=700 -D_DEFAULT_SOURCE -o CMakeFiles/puthreads.dir/queue.c.o -c /ibr/y-home/y0101318/Downloads/bs/07自己三版/lib/puthreads/queue.c",
+  "file": "/ibr/y-home/y0101318/Downloads/bs/07自己三版/lib/puthreads/queue.c"
+},
+{
+  "directory": "/ibr/y-home/y0101318/Downloads/bs/07自己三版/lib/puthreads",
+  "command": "/usr/bin/cc   -std=c11 -Wall -g -Wconversion -Wsign-conversion -O0 -D_XOPEN_SOURCE=700 -D_DEFAULT_SOURCE -std=c11 -Wall -g -Wconversion -Wsign-conversion -O0 -D_XOPEN_SOURCE=700 -D_DEFAULT_SOURCE -o CMakeFiles/puthreads.dir/tcb.c.o -c /ibr/y-home/y0101318/Downloads/bs/07自己三版/lib/puthreads/tcb.c",
+  "file": "/ibr/y-home/y0101318/Downloads/bs/07自己三版/lib/puthreads/tcb.c"
+},
+{
+  "directory": "/ibr/y-home/y0101318/Downloads/bs/07自己三版/lib/puthreads",
+  "command": "/usr/bin/cc   -std=c11 -Wall -g -Wconversion -Wsign-conversion -O0 -D_XOPEN_SOURCE=700 -D_DEFAULT_SOURCE -std=c11 -Wall -g -Wconversion -Wsign-conversion -O0 -D_XOPEN_SOURCE=700 -D_DEFAULT_SOURCE -o CMakeFiles/puthreads.dir/threads.c.o -c /ibr/y-home/y0101318/Downloads/bs/07自己三版/lib/puthreads/threads.c",
+  "file": "/ibr/y-home/y0101318/Downloads/bs/07自己三版/lib/puthreads/threads.c"
+}
+]
