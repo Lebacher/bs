@@ -1,0 +1,4 @@
+s:client:0 Message:1
+s:client:0 Message:2
+s:client:0 Message:3
+/exit
