@@ -25,6 +25,8 @@ enum constants
 
 extern pthread_t reading_thread;
 extern int       client_socket;
+extern pthread_mutex_t mutex;
+extern int inet_aton (const char *__cp, struct in_addr *__inp) __THROW;
 
 /**
  * @brief initialize_server_socket initialize the socket for the server
@@ -36,6 +38,11 @@ void connect_to_server();
  * and in return receives a similar arbitrary message from the server that is printed on the screen
  */
 void handshake();
+
+/**
+ * @brief closes connection to the server in order to unblock the address and ports
+ */
+void close_connection();
 
 /**
  * @brief prompts the user for an input and depending on it a get or a set request is send to the server
