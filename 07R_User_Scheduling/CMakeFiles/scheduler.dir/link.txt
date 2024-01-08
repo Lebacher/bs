@@ -1,0 +1,1 @@
+/usr/bin/clang -fcolor-diagnostics -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls -rdynamic CMakeFiles/scheduler.dir/src/main.c.o CMakeFiles/scheduler.dir/src/demo.c.o CMakeFiles/scheduler.dir/src/sem.c.o -o scheduler  libputhreads.a 

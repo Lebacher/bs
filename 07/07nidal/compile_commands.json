@@ -1,0 +1,32 @@
+[
+{
+  "directory": "/ibr/y-home/y0101318/Documents/bs/07/07nidal",
+  "command": "/usr/bin/clang -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700 -I/ibr/y-home/y0101318/Documents/bs/07/07nidal/lib/puthreads -std=c11 -g -O0 -Wconversion -Wsign-conversion -Wno-newline-eof -Wno-array-bounds -o CMakeFiles/puthreads.dir/lib/puthreads/queue.c.o -c /ibr/y-home/y0101318/Documents/bs/07/07nidal/lib/puthreads/queue.c",
+  "file": "/ibr/y-home/y0101318/Documents/bs/07/07nidal/lib/puthreads/queue.c"
+},
+{
+  "directory": "/ibr/y-home/y0101318/Documents/bs/07/07nidal",
+  "command": "/usr/bin/clang -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700 -I/ibr/y-home/y0101318/Documents/bs/07/07nidal/lib/puthreads -std=c11 -g -O0 -Wconversion -Wsign-conversion -Wno-newline-eof -Wno-array-bounds -o CMakeFiles/puthreads.dir/lib/puthreads/tcb.c.o -c /ibr/y-home/y0101318/Documents/bs/07/07nidal/lib/puthreads/tcb.c",
+  "file": "/ibr/y-home/y0101318/Documents/bs/07/07nidal/lib/puthreads/tcb.c"
+},
+{
+  "directory": "/ibr/y-home/y0101318/Documents/bs/07/07nidal",
+  "command": "/usr/bin/clang -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700 -I/ibr/y-home/y0101318/Documents/bs/07/07nidal/lib/puthreads -std=c11 -g -O0 -Wconversion -Wsign-conversion -Wno-newline-eof -Wno-array-bounds -o CMakeFiles/puthreads.dir/lib/puthreads/threads.c.o -c /ibr/y-home/y0101318/Documents/bs/07/07nidal/lib/puthreads/threads.c",
+  "file": "/ibr/y-home/y0101318/Documents/bs/07/07nidal/lib/puthreads/threads.c"
+},
+{
+  "directory": "/ibr/y-home/y0101318/Documents/bs/07/07nidal",
+  "command": "/usr/bin/clang -D_DEFAULT_SOURCE -D_XOPEN_SOURCE -D_XOPEN_SOURCE_EXTENDED -I/ibr/y-home/y0101318/Documents/bs/07/07nidal/include -I/ibr/y-home/y0101318/Documents/bs/07/07nidal/lib/puthreads -std=c11 -O0 -g -pedantic -Wall -Wextra -Wconversion -Wsign-conversion -fcolor-diagnostics -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls -o CMakeFiles/scheduler.dir/src/main.c.o -c /ibr/y-home/y0101318/Documents/bs/07/07nidal/src/main.c",
+  "file": "/ibr/y-home/y0101318/Documents/bs/07/07nidal/src/main.c"
+},
+{
+  "directory": "/ibr/y-home/y0101318/Documents/bs/07/07nidal",
+  "command": "/usr/bin/clang -D_DEFAULT_SOURCE -D_XOPEN_SOURCE -D_XOPEN_SOURCE_EXTENDED -I/ibr/y-home/y0101318/Documents/bs/07/07nidal/include -I/ibr/y-home/y0101318/Documents/bs/07/07nidal/lib/puthreads -std=c11 -O0 -g -pedantic -Wall -Wextra -Wconversion -Wsign-conversion -fcolor-diagnostics -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls -o CMakeFiles/scheduler.dir/src/demo.c.o -c /ibr/y-home/y0101318/Documents/bs/07/07nidal/src/demo.c",
+  "file": "/ibr/y-home/y0101318/Documents/bs/07/07nidal/src/demo.c"
+},
+{
+  "directory": "/ibr/y-home/y0101318/Documents/bs/07/07nidal",
+  "command": "/usr/bin/clang -D_DEFAULT_SOURCE -D_XOPEN_SOURCE -D_XOPEN_SOURCE_EXTENDED -I/ibr/y-home/y0101318/Documents/bs/07/07nidal/include -I/ibr/y-home/y0101318/Documents/bs/07/07nidal/lib/puthreads -std=c11 -O0 -g -pedantic -Wall -Wextra -Wconversion -Wsign-conversion -fcolor-diagnostics -fsanitize=address -fno-omit-frame-pointer -fno-optimize-sibling-calls -o CMakeFiles/scheduler.dir/src/sem.c.o -c /ibr/y-home/y0101318/Documents/bs/07/07nidal/src/sem.c",
+  "file": "/ibr/y-home/y0101318/Documents/bs/07/07nidal/src/sem.c"
+}
+]

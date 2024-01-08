@@ -1,0 +1,2 @@
+/usr/bin/llvm-ar qc libputhreads.a CMakeFiles/puthreads.dir/lib/puthreads/queue.c.o CMakeFiles/puthreads.dir/lib/puthreads/tcb.c.o CMakeFiles/puthreads.dir/lib/puthreads/threads.c.o
+/usr/bin/llvm-ranlib libputhreads.a

@@ -16,6 +16,7 @@ static QUEUE* completed;
 static TCB* running;
 static QUEUE* feedback;
 static unsigned int cycles = 0;
+bool schedule_state;
 
 static bool init_queues(void);
 static bool init_first_context(void);
@@ -107,6 +108,13 @@ void threads_exit(void* result) {
     // TODO: Pick the next process from feedback without enqueing the last
     // running one to mark it completed
 
+    //--------------------------------------------------------------------
+    if ((running = queue_dequeue(get_feedback_queue())) == NULL)
+    {
+        abort();
+    }  
+    //--------------------------------------------------------------------
+
     if (running == NULL) {
         exit(EXIT_SUCCESS);
     }
@@ -136,6 +144,9 @@ void threads_yield(int dont_reschedule) {
         // TODO: Change scheduler state such that in the next call of
         // handle_sigprof this TCB won't be re-enqueued (used for implemented
         // Semaphores)
+    //--------------------------------------------------------------------
+    schedule_state = true;
+    //--------------------------------------------------------------------
     }
     raise(SIGPROF);
 }
@@ -200,22 +211,22 @@ static bool init_profiling_timer(void) {
 
     // TODO: Remove comment to enable preemptive multithreading
 
-    // const struct itimerval timer = {
-    //     // Defines interrupt time (== timeslice length)
-    //     {SLICE_LENGTH_SECONDS, SLICE_LENGTH_MICROSECONDS},
-    //     // Arm the timer as soon as possible
-    //     {0, 1}};
+    const struct itimerval timer = {
+        // Defines interrupt time (== timeslice length)
+        {SLICE_LENGTH_SECONDS, SLICE_LENGTH_MICROSECONDS},
+        // Arm the timer as soon as possible
+        {0, 1}};
 
-    // // Enable timer
+    // Enable timer
 
-    // if (setitimer(ITIMER_PROF, &timer, NULL) == -1) {
-    //     if (sigaction(SIGPROF, &old, NULL) == -1) {
-    //         perror("sigaction");
-    //         abort();
-    //     }
+    if (setitimer(ITIMER_PROF, &timer, NULL) == -1) {
+        if (sigaction(SIGPROF, &old, NULL) == -1) {
+            perror("sigaction");
+            abort();
+        }
 
-    //     return false;
-    // }
+        return false;
+    }
 
     return true;
 }
@@ -224,7 +235,20 @@ static void handle_sigprof(int signum, siginfo_t* nfo, void* context) {
     int old_errno = errno;
 
     // TODO: Check for any waiting proccess in all queues
+    //--------------------------------------------------------------------
+    QUEUE* cursor = get_feedback_queue();
+    size_t counter = 0;
 
+    for (int i = 0; i < FEEDBACK_DEPTH; ++i) {
+        counter += cursor->size;
+        cursor = cursor->next;
+    }
+
+    if (counter == 0 && running == NULL)
+    {
+        _exit(0);
+    }
+    //--------------------------------------------------------------------
     // Backup the current context
 
     ucontext_t* stored  = &running->context;
@@ -238,10 +262,49 @@ static void handle_sigprof(int signum, siginfo_t* nfo, void* context) {
     // TODO: Bump last running process into next lowest queue
     // TODO: If last process yielded because of Semaphore-wait: do not requeue!
     // But otherwise do!
+    //--------------------------------------------------------------------
+    if (schedule_state == false)
+    {
+        cursor = get_feedback_queue();
+        int new_feedback_depth = running->feedback_depth;
+
+        if (running->feedback_depth == FEEDBACK_DEPTH - 1) {
+            new_feedback_depth++; 
+        }
+
+        
+        for (int i = 0; i < new_feedback_depth; i++) {
+            cursor = cursor->next;
+        }
+        
+        running->feedback_depth = new_feedback_depth; 
+
+        if (queue_enqueue(cursor, running) != 0) {
+            abort();
+        }
+    }
+    else
+    {
+        schedule_state = false;
+    }
+    //--------------------------------------------------------------------
 
     running = NULL;
 
     // TODO: Pick next process from *best* feedback queue
+    //--------------------------------------------------------------------
+    cursor = get_feedback_queue();
+    for (int i = 0; i < FEEDBACK_DEPTH; i++) {
+        if (cursor->head != NULL) {
+            break;
+        }
+        cursor = cursor->next;
+    }
+
+    if ((running = queue_dequeue(cursor)) == NULL) {
+        abort();
+    }
+    //--------------------------------------------------------------------
 
     if (running == NULL) {
         fprintf(stderr, "Threads: All threads are waiting or dead, Abort");
@@ -251,7 +314,32 @@ static void handle_sigprof(int signum, siginfo_t* nfo, void* context) {
     running->used_slices++;
 
     // TODO: Cycle-based Anti-Aging
+    //--------------------------------------------------------------------
+    cycles++;
+    //Add one to cycles every time.
+    //When cycles = ANTI_AGING_CYCLES, anti aging starts.
+    if (cycles == ANTI_AGING_CYCLES){
+        cursor = get_feedback_queue()->next;
+        TCB* temp_thread;
+        //Starting from the second queue in feedback, put each thread into the first queue.
+        for (int i = 0; i < FEEDBACK_DEPTH - 1; ++i) {
+            while (cursor->head != NULL){
 
+                if ((temp_thread = queue_dequeue(cursor)) == NULL) {
+                    abort();
+                }
+
+                temp_thread->feedback_depth = 1;
+
+                if (queue_enqueue(feedback, temp_thread) != 0) {
+                    abort();
+                }
+            }
+            cursor = cursor->next;
+        }
+        cycles = 0;
+    }
+    //--------------------------------------------------------------------
     // Manually leave the signal handler
     errno = old_errno;
     if (setcontext(&running->context) == -1) {
